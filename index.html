@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Quotation & Invoice System</title>
+    <link rel="stylesheet" href="style.css">    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Left Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-section">
+                    <div class="company-logo-icon">
+                         <img src="./logo.png" alt="Company Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" style="width: 100%;">
+                        <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: linear-gradient(135deg, #e5e9f0ff, #ebedf3ff); border-radius: 15px; color: white; font-size: 2rem;">
+                        </div>
+                    </div>
+                    <div class="logo-text">
+                        <h2>Business Suite</h2>
+                        <p>Professional & Accurate</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <!-- Document Type Tabs -->
+                <div class="document-tabs">
+                    <button class="tab-btn active" data-type="quotation">
+                        <i class="fas fa-file-alt"></i>
+                        Quotations
+                    </button>
+                    <button class="tab-btn" data-type="invoice">
+                        <i class="fas fa-file-invoice"></i>
+                        Invoices
+                    </button>
+                </div>
+
+                <!-- Data Statistics -->
+                <div class="stats-section">
+                    <h3><i class="fas fa-chart-bar"></i> Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalDocuments">0</div>
+                            <div class="stat-label" id="documentsLabel">Total Quotations</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalAmount">₹0</div>
+                            <div class="stat-label">Total Amount</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="actions-section">
+                    <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                    <div class="action-buttons">
+                        <button class="sidebar-btn" id="newDocumentBtn">
+                            <i class="fas fa-plus"></i> <span id="newDocumentText">New Quotation</span>
+                        </button>
+                        <button class="sidebar-btn" id="saveDataBtn">
+                            <i class="fas fa-save"></i> Save to Storage
+                        </button>
+                        <button class="sidebar-btn" id="exportAllBtn">
+                            <i class="fas fa-file-excel"></i> Export All Excel
+                        </button>
+                        <button class="sidebar-btn" id="clearAllBtn">
+                            <i class="fas fa-trash"></i> Clear All Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Documents -->
+                <div class="recent-section">
+                    <h3><i class="fas fa-history"></i> <span id="recentDocumentsTitle">Recent Quotations</span></h3>
+                    <div class="recent-list" id="recentList">
+                        <div class="no-data">No documents yet</div>
+                    </div>
+                </div>
+
+                <!-- Search Section -->
+                <div class="search-section">
+                    <h3><i class="fas fa-search"></i> Search</h3>
+                    <input type="text" id="searchInput" placeholder="Search documents..." class="search-input">
+                    <div class="search-results" id="searchResults"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-container">
+            <header class="header">
+                <div class="header-content">
+                    <div class="header-info">
+                        <h1 id="mainTitle">Professional Quotation System</h1>
+                        <p id="mainSubtitle">Generate & Store Quotations with Excel Export</p>
+                    </div>
+                    <div class="status-indicator" id="statusIndicator">
+                        <i class="fas fa-circle"></i>
+                        <span>Ready</span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <div class="form-section" id="formSection">
+                    <div class="form-card">
+                        <div class="form-header">
+                            <h2 id="formTitle">Create New Quotation</h2>
+                            <div class="form-actions-header">
+                                <button type="button" id="previewBtn" class="btn btn-info btn-sm">
+                                    <i class="fas fa-eye"></i> Preview
+                                </button>
+                                <button type="button" id="downloadExcelBtn" class="btn btn-success btn-sm">
+                                    <i class="fas fa-download"></i> Download Excel
+                                </button>
+                            </div>
+                        </div>
+
+                        <form id="documentForm" class="document-form">
+                            <!-- Company Information -->
+                            <div class="section-header">
+                                <i class="fas fa-building"></i>
+                                <h3>Company Information</h3>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="documentNo">
+                                        <i class="fas fa-hashtag"></i>
+                                        <span id="documentNoLabel">Quotation No.</span>
+                                    </label>
+                                    <input type="text" id="documentNo" name="documentNo" placeholder="Auto-generated" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="documentDate">
+                                        <i class="fas fa-calendar"></i>
+                                        <span id="documentDateLabel">Quotation Date</span>
+                                    </label>
+                                    <input type="date" id="documentDate" name="documentDate" required>
+                                </div>
+
+                                <div class="form-group" id="validTillGroup">
+                                    <label for="validTillDate">
+                                        <i class="fas fa-calendar-check"></i>
+                                        Valid Till Date
+                                    </label>
+                                    <input type="date" id="validTillDate" name="validTillDate" required>
+                                </div>
+
+                                <div class="form-group" id="dueDateGroup" style="display: none;">
+                                    <label for="dueDate">
+                                        <i class="fas fa-calendar-times"></i>
+                                        Due Date
+                                    </label>
+                                    <input type="date" id="dueDate" name="dueDate">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="companyName">
+                                        <i class="fas fa-building"></i>
+                                        Company Name
+                                    </label>
+                                    <input type="text" id="companyName" name="companyName" placeholder="Your Company Name" required>
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label for="companyAddress">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        Company Address
+                                    </label>
+                                    <textarea id="companyAddress" name="companyAddress" rows="3" placeholder="Enter complete company address" required></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Client Information -->
+                            <div class="section-header">
+                                <i class="fas fa-user-tie"></i>
+                                <h3>Client Information</h3>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="clientName">
+                                        <i class="fas fa-user"></i>
+                                        Client Name
+                                    </label>
+                                    <input type="text" id="clientName" name="clientName" placeholder="Client/Company Name" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="clientEmail">
+                                        <i class="fas fa-envelope"></i>
+                                        Client Email
+                                    </label>
+                                    <input type="email" id="clientEmail" name="clientEmail" placeholder="client@example.com" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="clientPhone">
+                                        <i class="fas fa-phone"></i>
+                                        Client Phone
+                                    </label>
+                                    <input type="tel" id="clientPhone" name="clientPhone" placeholder="+91 98765 43210">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="clientLocation">
+                                        <i class="fas fa-map-pin"></i>
+                                        Location
+                                    </label>
+                                    <input type="text" id="clientLocation" name="clientLocation" placeholder="City, State">
+                                </div>
+                            </div>
+
+                            <!-- Items Section -->
+                            <div class="section-header">
+                                <i class="fas fa-list"></i>
+                                <h3 id="itemsSectionTitle">Quotation Items</h3>
+                                <button type="button" id="addItemBtn" class="btn btn-secondary btn-sm">
+                                    <i class="fas fa-plus"></i>
+                                    Add Item
+                                </button>
+                            </div>
+
+                            <div class="items-wrapper">
+                                <div class="items-container" id="itemsContainer">
+                                    <div class="item-row" data-item="1">
+                                        <div class="item-grid">
+                                            <div class="form-group item-description">
+                                                <label>Item Description</label>
+                                                <input type="text" name="itemDescription[]" placeholder="Enter item description" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>GST Rate (%)</label>
+                                                <select name="gstRate[]" class="gst-rate">
+                                                    <option value="0">0%</option>
+                                                    <option value="5">5%</option>
+                                                    <option value="12">12%</option>
+                                                    <option value="18" selected>18%</option>
+                                                    <option value="28">28%</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Quantity</label>
+                                                <input type="number" name="quantity[]" min="1" value="1" class="quantity" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Rate (₹)</label>
+                                                <input type="number" name="rate[]" min="0" step="0.01" class="rate" placeholder="0.00" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Amount (₹)</label>
+                                                <input type="number" name="amount[]" class="amount" readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>CGST (₹)</label>
+                                                <input type="number" name="cgst[]" class="cgst" readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>SGST (₹)</label>
+                                                <input type="number" name="sgst[]" class="sgst" readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Total (₹)</label>
+                                                <input type="number" name="total[]" class="item-total" readonly>
+                                            </div>
+                                            <div class="form-group item-actions">
+                                                <label>&nbsp;</label>
+                                                <button type="button" class="btn btn-danger btn-sm remove-item">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Payment Information (Only for Invoices) -->
+                            <div class="section-header" id="paymentSection" style="display: none;">
+                                <i class="fas fa-credit-card"></i>
+                                <h3>Payment Information</h3>
+                            </div>
+
+                            <div class="form-grid" id="paymentFields" style="display: none;">
+                                <div class="form-group">
+                                    <label for="paymentStatus">
+                                        <i class="fas fa-money-check"></i>
+                                        Payment Status
+                                    </label>
+                                    <select id="paymentStatus" name="paymentStatus">
+                                        <option value="unpaid">Unpaid</option>
+                                        <option value="partial">Partially Paid</option>
+                                        <option value="paid">Fully Paid</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="paymentTerms">
+                                        <i class="fas fa-calendar-day"></i>
+                                        Payment Terms
+                                    </label>
+                                    <select id="paymentTerms" name="paymentTerms">
+                                        <option value="immediate">Due Immediately</option>
+                                        <option value="7days">Net 7 Days</option>
+                                        <option value="15days">Net 15 Days</option>
+                                        <option value="30days">Net 30 Days</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="paymentMethod">
+                                        <i class="fas fa-university"></i>
+                                        Payment Method
+                                    </label>
+                                    <select id="paymentMethod" name="paymentMethod">
+                                        <option value="bank">Bank Transfer</option>
+                                        <option value="cash">Cash</option>
+                                        <option value="cheque">Cheque</option>
+                                        <option value="upi">UPI</option>
+                                        <option value="card">Credit/Debit Card</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="advanceAmount">
+                                        <i class="fas fa-rupee-sign"></i>
+                                        Advance Received (₹)
+                                    </label>
+                                    <input type="number" id="advanceAmount" name="advanceAmount" min="0" step="0.01" placeholder="0.00">
+                                </div>
+                            </div>
+
+                            <!-- Totals Section -->
+                            <div class="totals-section">
+                                <div class="totals-container">
+                                    <div class="totals-grid">
+                                        <div class="total-row">
+                                            <span>Subtotal:</span>
+                                            <span id="subtotal">₹0.00</span>
+                                        </div>
+                                        <div class="total-row">
+                                            <span>Total CGST:</span>
+                                            <span id="totalCGST">₹0.00</span>
+                                        </div>
+                                        <div class="total-row">
+                                            <span>Total SGST:</span>
+                                            <span id="totalSGST">₹0.00</span>
+                                        </div>
+                                        <div class="total-row" id="advanceRow" style="display: none;">
+                                            <span>Advance Received:</span>
+                                            <span id="advanceDisplay">₹0.00</span>
+                                        </div>
+                                        <div class="total-row grand-total">
+                                            <span id="grandTotalLabel">Grand Total:</span>
+                                            <span id="grandTotal">₹0.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Terms and Conditions -->
+                            <div class="section-header">
+                                <i class="fas fa-file-contract"></i>
+                                <h3>Terms and Conditions</h3>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <textarea id="termsConditions" name="termsConditions" rows="4" placeholder="Enter terms and conditions...">1. Goods Once Sold Should Not be Return Back.
+2. Work will resume after advance payment.
+
+For any enquiry, reach out via email at revanagiricomputers@gmail.com, call on +91 95350 59254</textarea>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" id="clearBtn" class="btn btn-secondary">
+                                    <i class="fas fa-eraser"></i>
+                                    Clear Form
+                                </button>
+                                <button type="button" id="generateBtn" class="btn btn-primary">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span id="generateBtnText">Generate Quotation</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="preview-section" id="previewSection" style="display: none;">
+                    <div class="preview-card">
+                        <div class="preview-header">
+                            <h3 id="previewTitle">Quotation Preview</h3>
+                            <div class="preview-actions">
+                                <button type="button" id="printBtn" class="btn btn-success">
+                                    <i class="fas fa-print"></i>
+                                    Print
+                                </button>
+                                <button type="button" id="editBtn" class="btn btn-secondary">
+                                    <i class="fas fa-edit"></i>
+                                    Edit
+                                </button>
+                            </div>
+                        </div>
+                        <div class="document-preview" id="documentPreview">
+                            <!-- Generated document will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">
+        <div class="notification-content">
+            <i class="notification-icon"></i>
+            <span class="notification-message"></span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
