@@ -925,6 +925,15 @@ function generateDocumentPreview(data) {
     const amountDue = isInvoice ? data.grandTotal - (data.advanceAmount || 0) : data.grandTotal;
     
     const html = `
+        <div>
+               <img src="./revanasidda.png" alt="Company Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" style="
+    width: 100px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-left: 45%;
+">
+        </div>
         <div class="document-header">
             <div class="company-info">
                 <div class="company-logo">
@@ -1477,4 +1486,5 @@ function debounce(func, wait) {
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
     };
+
 }
