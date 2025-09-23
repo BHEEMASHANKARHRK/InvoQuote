@@ -713,7 +713,7 @@ function formatDateForExcel(dateString) {
 function validateForm() {
     const requiredFields = [
         'documentDate', 'companyName', 'companyAddress',
-        'clientName', 'clientEmail'
+        'clientName', 
     ];
     
     // Add document type specific required fields
@@ -1488,3 +1488,4 @@ function debounce(func, wait) {
     };
 
 }
+
