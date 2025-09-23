@@ -753,7 +753,7 @@ function validateForm() {
         emailField.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.1)';
         if (!firstInvalidField) firstInvalidField = emailField;
         showNotification('Please enter a valid email address', 'error');
-        isValid = false;
+        isValid = true;
     }
     
     // Validate items
@@ -1488,4 +1488,5 @@ function debounce(func, wait) {
     };
 
 }
+
 
