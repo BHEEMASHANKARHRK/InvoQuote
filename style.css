@@ -786,14 +786,30 @@ body {
 
 .document-header {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 35px;
-    margin-bottom: 45px;
-    padding-bottom: 30px;
-    border-bottom: 3px solid #3b82f6;
+    align-items: center; /* vertical alignment */
+    justify-content: space-between; /* space between left, center, right */
+    width: 100%;
+    padding: 10px 0;
+    gap: 20px;
 }
+
+.header-logo-left, .header-logo-center {
+    display: flex;
+    align-items: center;
+}
+
+.header-logo-left img, .header-logo-center img {
+    max-height: 80px;
+    object-fit: contain;
+}
+
+.document-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* right-aligned details */
+    gap: 5px;
+}
+
 
 .company-info {
     display: flex;
@@ -1597,4 +1613,5 @@ body {
 .hover-lift:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+
 }
