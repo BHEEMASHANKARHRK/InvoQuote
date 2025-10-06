@@ -925,21 +925,21 @@ function generateDocumentPreview(data) {
     const amountDue = isInvoice ? data.grandTotal - (data.advanceAmount || 0) : data.grandTotal;
     
     const html = `
-        <div>
-               <img src="./revanasidda.png" alt="Company Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" style="
-    width: 100px;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    margin-left: 45%;
-">
-        </div>
         <div class="document-header">
             <div class="company-info">
                 <div class="company-logo">
                     <img src="./logo.png" alt="Company Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" style="width: 100%;">
                         <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: linear-gradient(135deg, #e5e9f0ff, #ebedf3ff); border-radius: 15px; color: white; font-size: 2rem;">
                         </div>
+                </div>
+                <div>
+                     <img src="./revanasidda.png" alt="Company Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" style="
+    width: 100px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-left: 45%;
+">
                 </div>
                 <div>
                     <h1>${data.companyName}</h1>
@@ -1488,5 +1488,6 @@ function debounce(func, wait) {
     };
 
 }
+
 
 
