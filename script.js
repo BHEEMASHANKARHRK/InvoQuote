@@ -926,37 +926,37 @@ function generateDocumentPreview(data) {
     
     const html = `
         <div class="document-header">
-            <div class="company-info">
-                <div class="company-logo">
-                    <img src="./logo.png" alt="Company Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" style="width: 100%;">
-                        <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: linear-gradient(135deg, #e5e9f0ff, #ebedf3ff); border-radius: 15px; color: white; font-size: 2rem;">
-                        </div>
-                </div>
-                <div>
-                     <img src="./revanasidda.png" alt="Company Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" style="
-    width: 100px;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    margin-left: 45%;
-">
-                </div>
-                <div>
-                    <h1>${data.companyName}</h1>
-                    <p>${data.companyAddress.replace(/\n/g, '<br>')}</p>
-                </div>
-            </div>
-            <div class="document-details">
-                <h2>${docTypeName}</h2>
-                ${paymentStatusBadge}
-                <p><strong>${docTypeName} No:</strong> ${data.documentNo}</p>
-                <p><strong>${docTypeName} Date:</strong> ${formatDate(data.documentDate)}</p>
-                ${isInvoice ? 
-                    `<p><strong>Due Date:</strong> ${formatDate(data.dueDate || data.validTillDate)}</p>` :
-                    `<p><strong>Valid Till:</strong> ${formatDate(data.validTillDate)}</p>`
-                }
+    <div class="company-info">
+        <div class="company-logo">
+            <img src="./logo.png" alt="Company Logo"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                style="width: 100%;">
+            <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: linear-gradient(135deg, #e5e9f0ff, #ebedf3ff); border-radius: 15px; color: white; font-size: 2rem;">
             </div>
         </div>
+        <div>
+            <img src="./revanasidda.png" alt="Company Logo"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                style="width: 100px; display: flex; justify-content: center; margin: 0 auto;">
+        </div>
+        <div>
+            <h1>${data.companyName}</h1>
+            <p>${data.companyAddress.replace(/\n/g, '<br>')}</p>
+        </div>
+    </div>
+
+    <div class="document-details">
+        <h2>${docTypeName}</h2>
+        ${paymentStatusBadge}
+        <p><strong>${docTypeName} No:</strong> ${data.documentNo}</p>
+        <p><strong>${docTypeName} Date:</strong> ${formatDate(data.documentDate)}</p>
+        ${isInvoice ?
+            `<p><strong>Due Date:</strong> ${formatDate(data.dueDate || data.validTillDate)}</p>` :
+            `<p><strong>Valid Till:</strong> ${formatDate(data.validTillDate)}</p>`
+        }
+    </div>
+</div>
+
         
         <div class="client-section">
             <div class="client-info">
@@ -1488,6 +1488,7 @@ function debounce(func, wait) {
     };
 
 }
+
 
 
 
