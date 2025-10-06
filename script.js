@@ -925,32 +925,28 @@ function generateDocumentPreview(data) {
     const amountDue = isInvoice ? data.grandTotal - (data.advanceAmount || 0) : data.grandTotal;
     
     const html = `
-        <div class="document-header">
-    <div class="company-info">
-        <div class="company-logo">
-            <img src="./logo.png" alt="Company Logo"
-                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                style="width: 100%;">
-            <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: linear-gradient(135deg, #e5e9f0ff, #ebedf3ff); border-radius: 15px; color: white; font-size: 2rem;">
-            </div>
-        </div>
-        <div>
-            <img src="./revanasidda.png" alt="Company Logo"
-                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                style="width: 100px; display: flex; justify-content: center; margin: 0 auto;">
-        </div>
-        <div>
-            <h1>${data.companyName}</h1>
-            <p>${data.companyAddress.replace(/\n/g, '<br>')}</p>
-        </div>
+        <<div class="document-header">
+    <!-- Left: Main Logo -->
+    <div class="header-logo-left">
+        <img src="./logo.png" alt="Company Logo"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+             style="max-height: 80px;">
     </div>
 
+    <!-- Center: Secondary Logo / Image -->
+    <div class="header-logo-center">
+        <img src="./revanasidda.png" alt="Secondary Logo"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+             style="max-height: 80px;">
+    </div>
+
+    <!-- Right: Document Details -->
     <div class="document-details">
         <h2>${docTypeName}</h2>
         ${paymentStatusBadge}
         <p><strong>${docTypeName} No:</strong> ${data.documentNo}</p>
         <p><strong>${docTypeName} Date:</strong> ${formatDate(data.documentDate)}</p>
-        ${isInvoice ?
+        ${isInvoice ? 
             `<p><strong>Due Date:</strong> ${formatDate(data.dueDate || data.validTillDate)}</p>` :
             `<p><strong>Valid Till:</strong> ${formatDate(data.validTillDate)}</p>`
         }
@@ -1488,6 +1484,7 @@ function debounce(func, wait) {
     };
 
 }
+
 
 
 
