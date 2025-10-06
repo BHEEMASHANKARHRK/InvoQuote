@@ -925,7 +925,7 @@ function generateDocumentPreview(data) {
     const amountDue = isInvoice ? data.grandTotal - (data.advanceAmount || 0) : data.grandTotal;
     
     const html = `
-        <<div class="document-header">
+        <div class="document-header">
     <!-- Left: Main Logo -->
     <div class="header-logo-left">
         <img src="./logo.png" alt="Company Logo"
@@ -1484,6 +1484,7 @@ function debounce(func, wait) {
     };
 
 }
+
 
 
 
