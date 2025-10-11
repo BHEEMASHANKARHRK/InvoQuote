@@ -427,14 +427,6 @@ function generateDocument() {
     
     const formData = getFormData();
     
-    // Check for duplicates
-    const isDuplicate = checkForDuplicates(formData);
-    if (isDuplicate) {
-        setStatus('duplicate', 'Duplicate found');
-        showNotification(`A ${currentDocumentType} with this client email already exists. Please check existing records.`, 'warning');
-        return;
-    }
-    
     currentDocumentData = formData;
     generateDocumentPreview(formData);
     showPreview();
@@ -1484,6 +1476,7 @@ function debounce(func, wait) {
     };
 
 }
+
 
 
 
